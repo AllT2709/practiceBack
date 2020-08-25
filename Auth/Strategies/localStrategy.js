@@ -26,26 +26,25 @@ passport.use('register',new LocalStrategy({
         if(!email || !password){
             return cb(err,false,{message: 'require parameters'});
         }
-         await UserModel.findOne({email,password})
+         await UserModel.findOne({email})
             .then((user) =>{
                 if(user !=null){
-                    return cb(err,false);
+                    //console.log(user);
+                    return cb(null,false,{message: 'That user is registered'});
                 }
-                //let hashPass=  bcrypt.hash(password,5); 
-                /*let body = {
-                    email,
-                    password: hashPass
-                }*/
-                bcrypt.hash(password,5)
-                    .then(hashPass =>{
+                else{
 
-                        let newUser = new UserModel({
-                            email,
-                            password: hashPass
-                        });
-                        newUser.save();
-                        return cb(null,newUser);
-                    })
+                    bcrypt.hash(password,5)
+                        .then(hashPass =>{
+    
+                            let newUser = new UserModel({
+                                email,
+                                password: hashPass
+                            });
+                            newUser.save();
+                            return cb(null,newUser);
+                        })
+                }
                 
         
             })
