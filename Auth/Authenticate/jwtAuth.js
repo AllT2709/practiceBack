@@ -12,6 +12,16 @@ class OpToken {
     sign(data){
         return jwtAuth.sign(data,this.secret);
     }
+
+    decoded(token){
+        return jwtAuth.decode(token);
+        
+    }
+    getToken(req){
+        let token = req.headers.authorization || '';
+        token = token.replace('Bearer ','')
+        return this.decoded(token);
+    }
 }
 
 module.exports = OpToken;
