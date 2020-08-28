@@ -3,7 +3,8 @@ const ModelCont = require('../../../Models/contact');
 
 async function getAll(){
     let contacts = await ModelCont.find()
-        .populate('users');
+        .populate('users')
+        .exec()
     return contacts;
 }
  function addContact(contact){

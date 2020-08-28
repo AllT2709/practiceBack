@@ -12,7 +12,7 @@ const jwtAuth = new OpToken();
 
 router.get('/contacts',(req,res)=>{
     let userToken = jwtAuth.getToken(req);
-    //console.log(userToken.user);
+    //console.log(userToken.user._id);
     if(userToken !== undefined){
         controller.list(userToken.user._id)
             .then(data =>{
@@ -30,11 +30,13 @@ router.get('/contacts',(req,res)=>{
  })
  router.post('/contacts/add', (req,res)=>{
      let userToken = jwtAuth.getToken(req);
-     //console.log(userToken);
+     //console.log(userToken.user._id);
+     let user = userToken.user._id;
+     let {name,number} = req.body
      let newUser = {
-         name: req.body.name,
-         number: req.body.number,
-         userId: userToken.user._id
+         name: name,
+         number: number,
+         userId: user,
      }
      controller.add(newUser)
         .then(data =>{
