@@ -2,15 +2,19 @@ const ModelCont = require('../../../Models/contact');
 
 
 async function getAll(){
-    let contacts = await ModelCont.find();
+    let contacts = await ModelCont.find()
+        .populate('users');
     return contacts;
 }
-/*async function getContact(contactId){
-    
-}*/
+ function addContact(contact){
+    let newContact = new ModelCont(contact);
+    newContact.save();
+    return newContact;
+}
 
 
 
 module.exports = {
     get: getAll,
+    add: addContact,
 }

@@ -12,19 +12,37 @@ const jwtAuth = new OpToken();
 
 router.get('/contacts',(req,res)=>{
     let userToken = jwtAuth.getToken(req);
+    //console.log(userToken.user);
     if(userToken !== undefined){
-        controller.list(userToken._id)
+        controller.list(userToken.user._id)
             .then(data =>{
                 console.log(data);
+                return response.success(req,res,data,200);
             })
             .catch(err =>{
                 console.error(err);
             })
-        return response.success(req,res,userToken,200);
+        
     }else{
          console.log('algo salio mal');
          return response.error(req,res,'Internal error')
     }
+ })
+ router.post('/contacts/add', (req,res)=>{
+     let userToken = jwtAuth.getToken(req);
+     //console.log(userToken);
+     let newUser = {
+         name: req.body.name,
+         number: req.body.number,
+         userId: userToken.user._id
+     }
+     controller.add(newUser)
+        .then(data =>{
+            return response.success(req,res,data,200);
+        })
+        .catch(err =>{
+            return response.error(req,res,err,500);
+        })
  })
  
 router.get('/profile', (req,res)=>{
