@@ -68,7 +68,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/register', passport.authenticate('register', { session: false }), (req, res, next) => {
-    
+
     return response.success(req, res, 'User created', 200);
     /*passport.authenticate('register',(err,user)=>{
         

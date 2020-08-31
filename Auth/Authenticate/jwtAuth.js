@@ -5,21 +5,22 @@ const config = require('../../Config/config');
 
 
 class OpToken {
-    constructor(){
+    constructor() {
         this.secret = config.jwt.secret;
     }
 
-    sign(data){
-        return jwtAuth.sign(data,this.secret);
+    sign(data) {
+        return jwtAuth.sign(data, this.secret);
     }
 
-    decoded(token){
+    decoded(token) {
+        console.log(token)
         return jwtAuth.decode(token);
-        
+
     }
-    getToken(req){
+    getToken(req) {
         let token = req.headers.authorization || '';
-        token = token.replace('Bearer ','')
+        token = token.replace('Bearer ', '')
         return this.decoded(token);
     }
 }

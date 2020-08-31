@@ -1,5 +1,5 @@
 const passport = require('passport')
-const {Router} = require('express');
+const { Router } = require('express');
 
 const response = require('../../../Network/response');
 
@@ -10,45 +10,54 @@ const OpToken = require('../../../Auth/Authenticate/jwtAuth')
 const controller = require('./controller')
 const jwtAuth = new OpToken();
 
-router.get('/contacts',(req,res)=>{
+const UserModel = require('../../../Models/user');
+
+router.get('/contacts', (req, res) => {
     let userToken = jwtAuth.getToken(req);
     //console.log(userToken.user._id);
-    if(userToken !== undefined){
+    if (userToken !== undefined) {
         controller.list(userToken.user._id)
-            .then(data =>{
+            .then(data => {
                 console.log(data);
-                return response.success(req,res,data,200);
+                return response.success(req, res, data, 200);
             })
-            .catch(err =>{
+            .catch(err => {
                 console.error(err);
             })
-        
-    }else{
-         console.log('algo salio mal');
-         return response.error(req,res,'Internal error')
+
+    } else {
+        console.log('algo salio mal');
+        return response.error(req, res, 'Internal error')
     }
- })
- router.post('/contacts/add', (req,res)=>{
-     let userToken = jwtAuth.getToken(req);
-     //console.log(userToken.user._id);
-     let user = userToken.user._id;
-     let {name,number} = req.body
-     let newUser = {
-         name: name,
-         number: number,
-         userId: user,
-     }
-     controller.add(newUser)
-        .then(data =>{
-            return response.success(req,res,data,200);
+})
+router.post('/contacts/add', async (req, res) => {
+    let userToken = jwtAuth.getToken(req);
+    //console.log(userToken.user._id);
+    console.log(">>" + JSON.stringify(userToken.user))
+    //let user = userToken.user._id;
+    var user = await UserModel.findOne({ _id: userToken.user._id });
+    console.log(JSON.stringify(user))
+
+    let { name, number } = req.body
+    let newUser = {
+        name: name,
+        number: number,
+        userId: user,
+    }
+    console.log("new user:" + newUser)
+    controller.add(newUser)
+        .then(data => {
+            return response.success(req, res, data, 200);
         })
-        .catch(err =>{
-            return response.error(req,res,err,500);
+        .catch(err => {
+            return response.error(req, res, err, 500);
         })
- })
- 
-router.get('/profile', (req,res)=>{
-    response.success(req,res,`welcome [name user]`,200);
+})
+
+router.get('/profile', (req, res) => {
+    let userToken = jwtAuth.getToken(req);
+    console.log(">>" + JSON.stringify(userToken));
+    response.success(req, res, `welcome ${userToken.user.email}`, 200);
 })
 
 module.exports = router;

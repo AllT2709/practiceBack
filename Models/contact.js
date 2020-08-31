@@ -1,19 +1,19 @@
-const  mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const mySchema = new Schema({
     name: {
-        type:String,
+        type: String,
         required: true
     },
-    number:{
+    number: {
         type: Number,
-        required:true
+        required: true
     },
-    user:{
+    userId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
 });
-const model = mongoose.model('Contact',mySchema);
-module.exports=model;
+const model = mongoose.model('Contact', mySchema);
+module.exports = model;
