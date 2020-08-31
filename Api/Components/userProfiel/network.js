@@ -12,18 +12,20 @@ const jwtAuth = new OpToken();
 
 const UserModel = require('../../../Models/user');
 
-router.get('/contacts', (req, res) => {
+router.get('/contacts', async (req, res) => {
     let userToken = jwtAuth.getToken(req);
     //console.log(userToken.user._id);
     if (userToken !== undefined) {
-        controller.list(userToken.user._id)
+        /*controller.list(userToken.user._id)
             .then(data => {
                 console.log(data);
                 return response.success(req, res, data, 200);
             })
             .catch(err => {
                 console.error(err);
-            })
+            })*/
+        var data = await controller.list(userToken.user._id);
+        return response.success(req, res, data, 200);
 
     } else {
         console.log('algo salio mal');
