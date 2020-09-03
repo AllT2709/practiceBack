@@ -64,12 +64,22 @@ router.put('/contacts/:id', async function(req,res){
     if(req.body.number){
         data.number = req.body.number;
     }
-    controller.update(req.query.id,data)
-        .then(data =>{
-            return response.success(req,res,data,200);
+    controller.update(req.params.id,data)
+        .then(datos =>{
+            return response.success(req,res,datos,200);
         })
         .catch(err =>{
             return response.error(req,res,err,400);
+        })
+})
+
+router.delete('/contacts/:id', async function(req,res){
+    controller.delete(req.params.id)
+        .then(data=>{
+            return response.success(req,res,'user deleted!!',200);
+        })
+        .catch(err=>{
+            return response.error(req,res,err,401);
         })
 })
 

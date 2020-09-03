@@ -29,9 +29,14 @@ async function updateContact(id,data){
     }
 }
 
+ function deleteContact(id){
+    return ModelCont.deleteOne({_id: id});
+}   
+
 
 module.exports = {
     get: getAll,
     add: addContact,
     update: updateContact,
+    delete: deleteContact,
 }
