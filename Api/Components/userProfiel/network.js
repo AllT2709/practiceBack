@@ -56,6 +56,23 @@ router.post('/contacts/add', async (req, res) => {
         })
 })
 
+router.put('/contacts/:id', async function(req,res){
+    let data = {}
+    if(req.body.name){
+        data.name = req.body.name;
+    }
+    if(req.body.number){
+        data.number = req.body.number;
+    }
+    controller.update(req.query.id,data)
+        .then(data =>{
+            return response.success(req,res,data,200);
+        })
+        .catch(err =>{
+            return response.error(req,res,err,400);
+        })
+})
+
 router.get('/profile', (req, res) => {
     let userToken = jwtAuth.getToken(req);
     console.log(">>" + JSON.stringify(userToken));

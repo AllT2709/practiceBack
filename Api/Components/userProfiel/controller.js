@@ -2,15 +2,7 @@ const store = require('./store');
 
 
 function getAll(idUser) {
-    /*return new Promise((reject,resolve) =>{
-        if (!idUser) {
-            
-            reject('there was an internal error'); 
-        }
-        resolve(store.get());  
-        
-    })*/
-    return store.get()
+    return store.get(idUser)
 }
 
 function addContact(contact) {
@@ -22,7 +14,17 @@ function addContact(contact) {
     })
 }
 
+function updateContact(id,data){
+    return new Promise((resolve,reject)=>{
+        if(!data){
+            reject('There was an error!!!');
+        }
+        resolve(store.update(id,data));
+    })
+}
+
 module.exports = {
     list: getAll,
     add: addContact,
+    update: updateContact,
 }
