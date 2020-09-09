@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const response = require('../../../Network/response');
 const OpToken = require('../../../Auth/Authenticate/jwtAuth')
-const config = require('../../../Config/config')
+//const config = require('../../../Config/config')
 require('../../../Auth/Strategies/localStrategy');
 
 
