@@ -1,7 +1,7 @@
 //const jwt = require('jsonwebtoken');
 
 const jwtAuth = require('jsonwebtoken');
-const config = require('../../config2/config');
+const config = require('../../config3/config');
 
 
 class OpToken {
