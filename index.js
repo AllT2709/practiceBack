@@ -1,7 +1,7 @@
 //requerimos lo paquetes
 const express = require('express');
-const config = require('./Config/config')
-const db = require('./config/db');
+const config = require('./config2/config')
+const db = require('./config2/db');
 const userAuth = require('./Api/Components/userAuth/network')
 const user = require('./Api/Components/userProfiel/network');
 const passport = require('passport');
