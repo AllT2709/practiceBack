@@ -60,6 +60,8 @@ router.post('/login', async (req, res, next) => {
                 const token = jwtAuth.sign({ user: body }, 'top_secret');
                 //Send back the token to the user
                 return res.json({ token });
+
+                
             });
         } catch (error) {
             return next(error);

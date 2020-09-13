@@ -5,6 +5,7 @@ const LocalStrategy = require("passport-local").Strategy
 const bcrypt = require('bcrypt');
 
 const UserModel = require('../../Models/user');
+const { json } = require("express");
 
 
 /*passport.serializeUser((user,cb)=>{
@@ -24,13 +25,16 @@ passport.use('register',new LocalStrategy({
     },
     async function(email,password,cb){
         if(!email || !password){
-            return cb(err,false,{message: 'require parameters'});
+            let err = JSON.stringify({message: 'That user is registered'})
+            return cb(err,false);
         }
          await UserModel.findOne({email})
             .then((user) =>{
-                if(user !=null){
+                if(user !==null){
                     //console.log(user);
-                    return cb(null,false,{message: 'That user is registered'});
+                    //let err =  new Error("That user is registered");
+                    let err = JSON.stringify({message: 'That user is registered'})
+                    return cb(err,null);
                 }
                 else{
 

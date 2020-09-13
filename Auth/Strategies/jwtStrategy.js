@@ -11,20 +11,7 @@ const UserModel = require('../../Models/user');
 passport.use('jwt', new JWTStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwt.secret,
-}/*,
-     async function(jwtPayload,cb){
-        await UserModel.findOne({email: jwtPayload.email})
-            .then(user =>{
-                if(!user){
-                     cb(err,false,{message: 'something wrong'})
-                }
-                    cb(null,user);
-            }) 
-            .catch(err =>{
-                    cb(err);
-                })
-        }*/
-    , async (token, done) => {
+}, async (token, done) => {
         try {
             //Pass the user details to the next middleware
             console.log(token.user.email)
