@@ -25,7 +25,7 @@ passport.use('register',new LocalStrategy({
     },
     async function(email,password,cb){
         if(!email || !password){
-            let err = JSON.stringify({message: 'That user is registered'})
+            let err = JSON.stringify({message: 'require parameters'})
             return cb(err,false);
         }
          await UserModel.findOne({email})
@@ -63,20 +63,28 @@ passport.use('login',new LocalStrategy({
     passwordField: 'password'
     },
     async function(email,password,cb){
+        if(!email || !password){
+            let err = JSON.stringify({message: 'require data'})
+            return cb(err,false);
+        }
         await UserModel.findOne({email})
             .then(user =>{
                 if(!user){
-                    return cb(err,false,{message: 'bad email'});
+                    let err = JSON.stringify({message: 'that email is not registered'})
+                    return cb(err,false);
+                    //return cb(err,false,{message: 'bad email'});
                 }else{
                     bcrypt.compare(password,user.password)
                         .then(responsePass=>{
                             if(!responsePass){
-                                return cb(err,false,{message: 'bad password'});
+                                let err = JSON.stringify({message: 'bad password'})
+                                return cb(err,false);
+                                //return cb(err,false,{message: 'bad password'});
                             }
-                        return cb(null,user);
+                            return cb(null,user);
 
-                    })
-                 }
+                        })
+                }
             })
             .catch(err =>{
                 return cb(err,false);

@@ -6,6 +6,7 @@ const userAuth = require('./Api/Components/userAuth/network')
 const user = require('./Api/Components/userProfiel/network');
 const passport = require('passport');
 const app = express();
+const errors = require('./middlewares/handleErrors')
 
 
 require('./Auth/Strategies/jwtStrategy')
@@ -15,6 +16,8 @@ db(config.db.dbURL);
 //middleware
 app.use(express.json());
 app.use(passport.initialize());
+app.use(errors.errorHandler)
+app.use(errors.logError)
 
 //routes
 app.use('/auth',userAuth);
