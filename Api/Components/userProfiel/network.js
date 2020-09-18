@@ -13,17 +13,12 @@ const jwtAuth = new OpToken();
 const UserModel = require('../../../Models/user');
 
 router.get('/contacts', async (req, res) => {
+    
+    
     let userToken = jwtAuth.getToken(req);
     //console.log(userToken.user._id);
     if (userToken !== undefined) {
-        /*controller.list(userToken.user._id)
-            .then(data => {
-                console.log(data);
-                return response.success(req, res, data, 200);
-            })
-            .catch(err => {
-                console.error(err);
-            })*/
+
         var data = await controller.list(userToken.user._id);
         return response.success(req, res, data, 200);
 
@@ -36,7 +31,7 @@ router.post('/contacts/add', async (req, res) => {
     let userToken = jwtAuth.getToken(req);
     //console.log(userToken.user._id);
     console.log(">>" + JSON.stringify(userToken.user))
-    //let user = userToken.user._id;
+    
     var user = await UserModel.findOne({ _id: userToken.user._id });
     console.log(JSON.stringify(user))
 

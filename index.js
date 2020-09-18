@@ -7,6 +7,7 @@ const user = require('./Api/Components/userProfiel/network');
 const passport = require('passport');
 const app = express();
 const errors = require('./middlewares/handleErrors')
+const session = require('express-session');
 
 
 require('./Auth/Strategies/jwtStrategy')
@@ -18,6 +19,11 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(errors.errorHandler)
 app.use(errors.logError)
+app.use(session({
+    secret:'secret1',
+    resave: true,
+    saveUninitialized:false
+}))
 
 //routes
 app.use('/auth',userAuth);

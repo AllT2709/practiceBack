@@ -58,7 +58,14 @@ router.post('/login', async (req, res, next) => {
                 const body = { _id: user._id, email: user.email };
                 //Sign the JWT token and populate the payload with the user email and id
                 const token = jwtAuth.sign({ user: body }, 'top_secret');
+                console.log(token);
                 //Send back the token to the user
+                
+                res.cookie('token_user',token,{
+                    //secure:true,
+                    httpOnly:true,
+                    path:'/'
+                })
                 return res.json({ token });
 
                 

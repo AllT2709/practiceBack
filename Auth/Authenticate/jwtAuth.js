@@ -19,8 +19,13 @@ class OpToken {
 
     }
     getToken(req) {
-        let token = req.headers.authorization || '';
-        token = token.replace('Bearer ', '')
+        //let token = req.headers.authorization || '';
+        //console.log(req.headers.cookie);
+        if(!req.headers.cookie){
+            return new Error('No esta autorizado!!')
+        }
+        let token = req.headers.cookie || '';
+        token = token.replace('token_user=', '')
         return this.decoded(token);
     }
 }
