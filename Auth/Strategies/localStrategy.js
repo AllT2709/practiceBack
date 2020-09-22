@@ -21,9 +21,10 @@ passport.deserializeUser((id,cb)=>{
 
 passport.use('register',new LocalStrategy({
     usernameField: 'email',
-    passwordField:  'password'
+    passwordField:  'password',
+    passReqToCallback:true
     },
-    async function(email,password,cb){
+    async function(req,email,password,cb){
         if(!email || !password){
             let err = JSON.stringify({message: 'require parameters'})
             return cb(err,false);
@@ -42,6 +43,8 @@ passport.use('register',new LocalStrategy({
                         .then(hashPass =>{
     
                             let newUser = new UserModel({
+                                name: req.body.name,
+                                username: req.body.username,
                                 email,
                                 password: hashPass
                             });
