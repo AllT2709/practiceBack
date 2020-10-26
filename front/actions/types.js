@@ -1,0 +1,11 @@
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_FAIL = 'REGISTER_FAIL';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const GET_CONTACTS = 'GET_CONTACTS'
+export const GET_CONTACT = 'GET_CONTACT'
+export const ADD_CONTACT = 'ADD_CONTACT';
+export const DELETE_CONTACT = 'DELETE_CONTACT';
+export const UPDATE_CONTACT = 'UPDATE_CONTACT';
+export const ERROR = 'ERROR';
+export const IS_LOGGEDIN = 'IS_LOGGEDIN';

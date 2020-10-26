@@ -20,6 +20,9 @@ router.get('/contacts', async (req, res) => {
     if (userToken !== undefined) {
 
         var data = await controller.list(userToken.user._id);
+        if(data.length == 0){
+            return response.error(req,res,'there are not contacts')
+        }
         return response.success(req, res, data, 200);
 
     } else {

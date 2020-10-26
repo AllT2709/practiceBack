@@ -8,13 +8,14 @@ const passport = require('passport');
 const app = express();
 const errors = require('./middlewares/handleErrors')
 const session = require('express-session');
-
+const cors = require('cors')
 
 require('./Auth/Strategies/jwtStrategy')
 //conecting database
 db(config.db.dbURL);
 
 //middleware
+app.use(cors())
 app.use(express.json());
 app.use(passport.initialize());
 app.use(errors.errorHandler)

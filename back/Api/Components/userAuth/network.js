@@ -66,8 +66,8 @@ router.post('/login', async (req, res, next) => {
                     httpOnly:true,
                     path:'/'
                 })
-                return res.json({ token });
-
+                //return res.json({ body,token });
+                return response.success(req,res,{info:body,token})
                 
             });
         } catch (error) {
