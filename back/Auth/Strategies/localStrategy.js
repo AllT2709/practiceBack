@@ -5,7 +5,8 @@ const LocalStrategy = require("passport-local").Strategy
 const bcrypt = require('bcrypt');
 
 const UserModel = require('../../Models/user');
-const { json } = require("express");
+
+const error = require('../../utils/error')
 
 
 /*passport.serializeUser((user,cb)=>{
@@ -19,29 +20,25 @@ passport.deserializeUser((id,cb)=>{
         })
 })*/
 
-passport.use('register',new LocalStrategy({
+passport.use('register', new LocalStrategy({
     usernameField: 'email',
-    passwordField:  'password',
-    passReqToCallback:true
-    },
-    async function(req,email,password,cb){
-        if(!email || !password){
-            let err = JSON.stringify({message: 'require parameters'})
-            return cb(err,false);
-        }
-         await UserModel.findOne({email})
-            .then((user) =>{
-                if(user !==null){
+    passwordField: 'password',
+    passReqToCallback: true
+},
+    async function (req, email, password, cb) {
+        await UserModel.findOne({ email })
+            .then((user) => {
+                if (user !== null) {
                     //console.log(user);
-                    //let err =  new Error("That user is registered");
-                    let err = JSON.stringify({message: 'That user is registered'})
-                    return cb(err,null);
+                    let err = new error("That user is registered", 401);
+                    //let err = JSON.stringify({message: 'That user is registered'})
+                    return cb(err, null);
                 }
-                else{
+                else {
 
-                    bcrypt.hash(password,5)
-                        .then(hashPass =>{
-    
+                    bcrypt.hash(password, 5)
+                        .then(hashPass => {
+
                             let newUser = new UserModel({
                                 name: req.body.name,
                                 username: req.body.username,
@@ -49,49 +46,45 @@ passport.use('register',new LocalStrategy({
                                 password: hashPass
                             });
                             newUser.save();
-                            return cb(null,newUser);
+                            return cb(null, newUser);
                         })
                 }
-                
-        
+
+
             })
-            .catch((err)=>{
+            .catch((err) => {
                 return cb(err);
             })
-}));
-    
+    }));
 
-passport.use('login',new LocalStrategy({
+
+passport.use('login', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
-    },
-    async function(email,password,cb){
-        if(!email || !password){
-            let err = JSON.stringify({message: 'require data'})
-            return cb(err,false);
-        }
-        await UserModel.findOne({email})
-            .then(user =>{
-                if(!user){
-                    let err = JSON.stringify({message: 'that email is not registered'})
-                    return cb(err,false);
-                    //return cb(err,false,{message: 'bad email'});
-                }else{
-                    bcrypt.compare(password,user.password)
-                        .then(responsePass=>{
-                            if(!responsePass){
-                                let err = JSON.stringify({message: 'bad password'})
-                                return cb(err,false);
-                                //return cb(err,false,{message: 'bad password'});
+},
+    async function (email, password, cb) {
+        await UserModel.findOne({ email })
+            .then(user => {
+                if (!user) {
+                    let err = new error("that email is not registered", 401);
+                    //let err = JSON.stringify({ message: 'that email is not registered' })
+                    return cb(err, false);
+                } else {
+                    bcrypt.compare(password, user.password)
+                        .then(responsePass => {
+                            if (!responsePass) {
+                                let err = new error("bad password", 401);
+                                //let err = JSON.stringify({ message: 'bad password' })
+                                return cb(err, false);
                             }
-                            return cb(null,user);
+                            return cb(null, user);
 
                         })
                 }
             })
-            .catch(err =>{
-                return cb(err,false);
+            .catch(err => {
+                return cb(err, false);
             })
-}));
- 
+    }));
+
 

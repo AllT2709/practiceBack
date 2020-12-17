@@ -2,7 +2,7 @@
 
 const jwtAuth = require('jsonwebtoken');
 const config = require('../../config3/config');
-
+const error = require('../../utils/error')
 
 class OpToken {
     constructor() {
@@ -24,7 +24,7 @@ class OpToken {
         //if(!req.headers.cookie){...}
         if(!req.headers.authorization){
             //esto no me funciona
-            return new Error('No esta autorizado!!')
+            throw error('No esta autorizado!!',401)
         }
         //let token = req.headers.cookie|| '';
         let token = req.headers.authorization || '';

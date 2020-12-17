@@ -45,6 +45,9 @@ router.get('/', function (req, res) {
 });*/
 router.post('/login', async (req, res, next) => {
     console.log(">>" + req);
+    if(!req.body.email || req.body.password){
+        response.error(req,res,'require parameters');
+    }
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -53,6 +56,7 @@ router.post('/login', async (req, res, next) => {
             }
             req.login(user, { session: false }, async (error) => {
                 if (error) return next(error)
+                
                 //We don't want to store the sensitive information such as the
                 //user password in the token so we pick only the email and id
                 const body = { _id: user._id, email: user.email };

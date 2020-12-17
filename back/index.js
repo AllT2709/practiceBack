@@ -6,7 +6,7 @@ const userAuth = require('./Api/Components/userAuth/network')
 const user = require('./Api/Components/userProfiel/network');
 const passport = require('passport');
 const app = express();
-const errors = require('./middlewares/handleErrors')
+const errors = require('./Network/errors')
 const session = require('express-session');
 const cors = require('cors')
 
@@ -18,8 +18,6 @@ db(config.db.dbURL);
 app.use(cors())
 app.use(express.json());
 app.use(passport.initialize());
-app.use(errors.errorHandler)
-app.use(errors.logError)
 app.use(session({
     secret:'secret1',
     resave: true,
@@ -29,6 +27,9 @@ app.use(session({
 //routes
 app.use('/auth',userAuth);
 app.use('/api',passport.authenticate('jwt',{session: false}),user);
+
+
+app.use(errors);
 
 app.listen(config.api.port,function(){
     console.log(`Server listen on Port ${config.api.port}`);
